@@ -59,7 +59,7 @@ def parse_company_details(response):
         except Exception as e:
             sector = None
 
-        return {
+        data = {
             "id": company_id,
             "url": url,
             "sector": sector,
@@ -72,6 +72,12 @@ def parse_company_details(response):
             "phone": phone_number,
             "level": exporter_level
         }
+        for _, value in data.items():
+          if value == 'http://':
+            return None
+          if type(value) == str and 'restantes' in value:
+            return None
+        return data
     else:
         return None
 
@@ -137,7 +143,7 @@ def test():
 
 
 if __name__ == "__main__":
-    start = 2422
+    start = 8
     concurrent_requests = 3000
     with open('data.csv', 'w', newline='') as csvfile:
         spamwriter = csv.writer(csvfile)
